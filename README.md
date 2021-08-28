@@ -9,3 +9,10 @@ The final objective is to be able to simulate encounters, with the party on one 
 In its final state, the project should be able to take into account *everything* that players can use.
 
 But for now, the focus is far simpler: allow the simulation of fights, using only weapons, and nothing else.
+
+## Installation
+This project works with `python3`. To install it, follow these steps:
+
+* Clone the repository from the command line (`git clone https/ssh_link`). This will download the repository and all its content in a folder named `dnd-encounter-simulator`.
+* Without moving, use `pip install --editable ./dnd-encounter-simulator`. This will allow the modifications you make to be directly taken into account, without having to re-install the project each time.
+* You're good to go. Open python and `import DndEncounterSimulator` can run (or anything if you want to import only specific parts in your code).
