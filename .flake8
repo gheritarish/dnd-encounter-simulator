@@ -1,0 +1,24 @@
+[flake8]
+
+# See https://flake8rules.com
+
+ignore =
+    # default flake8 ignores
+    E121,E123,E216,E226,E24,E704,W503,W504
+    # Whitespace before ':'
+    E203
+    # Missing whitespace after ','
+    # black takes care of that. Sometimes it may
+    # add a trailing comma at the end of lists.
+    E231
+    # Line too long
+    # We use black, no need to enforce line length
+    E501
+    # do not use bare except
+    # it's too strict, there are cases where we can
+    # typically catch and release
+    E722
+
+per-file-ignores = 
+    # imported but unused in __init__.py, that's ok.
+    **/__init__.py:F401
