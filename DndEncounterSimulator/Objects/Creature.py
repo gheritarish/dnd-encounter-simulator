@@ -3,7 +3,7 @@ from typing import Dict, List
 import dice
 
 from DndEncounterSimulator.Objects.utils.conversion import convert_stat_to_mod
-from DndEncounterSimulator.Objects.utils.Weapon import Weapon
+from DndEncounterSimulator.Objects.Weapon import Weapon
 
 
 class Creature:
@@ -43,7 +43,7 @@ class Monster(Creature):
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
-        proficiency: int
+        proficiency: int,
     ):
         super(Monster, self).__init__(
             hit_points=hit_points,

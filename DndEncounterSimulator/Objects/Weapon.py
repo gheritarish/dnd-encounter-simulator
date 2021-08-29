@@ -9,7 +9,7 @@ class Weapon:
 
         :return: The dice to roll for a critical hit.
         """
-        dice_critical_hit = 2*int(self.damage.split("d")[0])
+        dice_critical_hit = 2 * int(self.damage.split("d")[0])
         value_of_dice = self.damage.split("d")[1]
         damage_critical = "d".join([str(dice_critical_hit), value_of_dice])
         return damage_critical

@@ -5,5 +5,5 @@ def convert_stat_to_mod(stat: int) -> int:
     :param stat: (int) The original stat.
     :return: (int) The modifier.
     """
-    result = (stat-10) // 2
+    result = (stat - 10) // 2
     return result
