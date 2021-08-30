@@ -35,6 +35,15 @@ class Creature:
             return False
         return True
 
+    def roll_initiative(self) -> int:
+        """
+        Method to roll the initiative of a creature.
+
+        :return: (int) The initiative rolled.
+        """
+        initiative = dice.roll("1d20")[0] + self.modifiers["dexterity"]
+        return initiative
+
 
 class Monster(Creature):
     def __init__(
