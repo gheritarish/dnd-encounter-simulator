@@ -13,11 +13,13 @@ class Creature:
 
     def __init__(
         self,
+        name: str,
         hit_points: int,
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
     ):
+        self.name = name
         self.hit_points = int(hit_points)
         self.armor_class = int(armor_class)
         if stats:
@@ -27,6 +29,7 @@ class Creature:
             key: convert_stat_to_mod(value) for (key, value) in self.stats.items()
         }
         self.dead = False
+        self.initiative = self.roll_initiative()
 
     def roll_initiative(self) -> int:
         """
@@ -51,6 +54,7 @@ class Creature:
 class Monster(Creature):
     def __init__(
         self,
+        name: str,
         hit_points: int,
         armor_class: int,
         stats: Dict,
@@ -58,6 +62,7 @@ class Monster(Creature):
         proficiency: int,
     ):
         super(Monster, self).__init__(
+            name=name,
             hit_points=hit_points,
             armor_class=armor_class,
             stats=stats,

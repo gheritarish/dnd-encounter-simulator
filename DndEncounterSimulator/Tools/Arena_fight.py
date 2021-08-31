@@ -6,6 +6,7 @@ from tqdm import tqdm
 from DndEncounterSimulator.Objects.Creature import Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
+from DndEncounterSimulator.Tools.utils.initiatives import sort_initiatives
 
 
 def define_args():
@@ -30,6 +31,7 @@ def main():
     for _ in tqdm(range(args.simulations)):
         scimitar = Weapon(stat_to_hit="dexterity", damage="1d6")
         goblin = Monster(
+            name="goblin",
             hit_points=7,
             armor_class=15,
             stats=STATS_GOBLIN,
@@ -39,6 +41,7 @@ def main():
 
         shortsword = Weapon(stat_to_hit="dexterity", damage="1d6")
         kenku = Monster(
+            name="kenku",
             hit_points=13,
             armor_class=13,
             stats=STATS_KENKU,
@@ -46,24 +49,12 @@ def main():
             proficiency=2,
         )
 
-        initiative_goblin = goblin.roll_initiative()
-        initiative_kenku = kenku.roll_initiative()
-
-        while initiative_kenku == initiative_goblin:
-            initiative_goblin = goblin.roll_initiative()
-            initiative_kenku = kenku.roll_initiative()
-
-        if initiative_kenku > initiative_goblin:
-            while not (goblin.dead or kenku.dead):
-                kenku.attack(opponent=goblin, weapon=kenku.weapons[0])
-                if not goblin.dead:
-                    goblin.attack(opponent=kenku, weapon=goblin.weapons[0])
-
-        elif initiative_goblin > initiative_kenku:
-            while not (goblin.dead or kenku.dead):
-                goblin.attack(opponent=kenku, weapon=goblin.weapons[0])
-                if not kenku.dead:
-                    kenku.attack(opponent=goblin, weapon=kenku.weapons[0])
+        fighters = [kenku, goblin]
+        fighters = sort_initiatives(fighters)
+        while not(fighters[0].dead or fighters[1].dead):
+            fighters[0].attack(opponent=fighters[1], weapon=fighters[0].weapons[0])
+            if not fighters[1].dead:
+                fighters[1].attack(opponent=fighters[0], weapon=fighters[1].weapons[0])
 
         if kenku.dead:
             goblin_victories += 1
