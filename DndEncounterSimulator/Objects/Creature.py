@@ -26,14 +26,7 @@ class Creature:
         self.modifiers = {
             key: convert_stat_to_mod(value) for (key, value) in self.stats.items()
         }
-
-    def is_dead(self):
-        """
-        Method to know if a creature is dead or not.
-        """
-        if self.hit_points > 0:
-            return False
-        return True
+        self.dead = False
 
     def roll_initiative(self) -> int:
         """
@@ -43,6 +36,16 @@ class Creature:
         """
         initiative = dice.roll("1d20")[0] + self.modifiers["dexterity"]
         return initiative
+
+    def damage(self, damages: int):
+        """
+        Method to remove HP when a Creature takes a hit.
+
+        :param damages: (int) The quantity of damage done
+        """
+        self.hit_points -= damages
+        if self.hit_points <= 0:
+            self.dead = True
 
 
 class Monster(Creature):
@@ -83,11 +86,11 @@ class Monster(Creature):
 
         if hit:
             if critical_hit:
-                opponent.hit_points -= (
+                opponent.damage(
                     dice.roll(weapon.critical_hit())[0]
                     + self.modifiers[weapon.stat_to_hit]
                 )
             else:
-                opponent.hit_points -= (
+                opponent.damage(
                     dice.roll(weapon.damage)[0] + self.modifiers[weapon.stat_to_hit]
                 )

@@ -1,14 +1,11 @@
-import logging
 import argparse
+import logging
 
 from tqdm import tqdm
 
 from DndEncounterSimulator.Objects.Creature import Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
-from DndEncounterSimulator.Tools.utils.Stats import (
-    STATS_KENKU,
-    STATS_GOBLIN,
-)
+from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
 
 def define_args():
@@ -57,23 +54,25 @@ def main():
             initiative_kenku = kenku.roll_initiative()
 
         if initiative_kenku > initiative_goblin:
-            while not (goblin.is_dead() or kenku.is_dead()):
+            while not (goblin.dead or kenku.dead):
                 kenku.attack(opponent=goblin, weapon=kenku.weapons[0])
-                if not goblin.is_dead():
+                if not goblin.dead:
                     goblin.attack(opponent=kenku, weapon=goblin.weapons[0])
 
         elif initiative_goblin > initiative_kenku:
-            while not (goblin.is_dead() or kenku.is_dead()):
+            while not (goblin.dead or kenku.dead):
                 goblin.attack(opponent=kenku, weapon=goblin.weapons[0])
-                if not kenku.is_dead():
+                if not kenku.dead:
                     kenku.attack(opponent=goblin, weapon=kenku.weapons[0])
 
-        if kenku.is_dead():
+        if kenku.dead:
             goblin_victories += 1
         else:
             kenku_victories += 1
 
-    logging.info(f"Kenku victories: {kenku_victories}, goblin victories: {goblin_victories}")
+    logging.info(
+        f"Kenku victories: {kenku_victories}, goblin victories: {goblin_victories}"
+    )
 
 
 if __name__ == "__main__":
