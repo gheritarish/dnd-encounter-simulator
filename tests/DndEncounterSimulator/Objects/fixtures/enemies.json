@@ -1,0 +1,14 @@
+[{
+  "name":"kenku",
+  "hit_points":13,
+  "armor_class":13,
+  "proficiency":2,
+  "camp":"red"
+},
+{
+  "name":"goblin",
+  "hit_points":7,
+  "armor_class":15,
+  "proficiency":2,
+  "camp":"blue"
+}]

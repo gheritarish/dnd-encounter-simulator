@@ -3,9 +3,9 @@ import logging
 
 from tqdm import tqdm
 
+from DndEncounterSimulator.Objects.Combat import Combat
 from DndEncounterSimulator.Objects.Creature import Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
-from DndEncounterSimulator.Tools.utils.initiatives import sort_initiatives
 from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
 
@@ -37,6 +37,7 @@ def main():
             stats=STATS_GOBLIN,
             weapons=[scimitar],
             proficiency=2,
+            camp="blue",
         )
 
         shortsword = Weapon(stat_to_hit="dexterity", damage="1d6")
@@ -47,16 +48,13 @@ def main():
             stats=STATS_KENKU,
             weapons=[shortsword],
             proficiency=2,
+            camp="red",
         )
 
-        fighters = [kenku, goblin]
-        fighters = sort_initiatives(fighters)
-        while not (fighters[0].dead or fighters[1].dead):
-            fighters[0].attack(opponent=fighters[1], weapon=fighters[0].weapons[0])
-            if not fighters[1].dead:
-                fighters[1].attack(opponent=fighters[0], weapon=fighters[1].weapons[0])
+        combat = Combat(monsters=[kenku, goblin])
+        victorious_camp = combat.fight()
 
-        if kenku.dead:
+        if victorious_camp == "blue":
             goblin_victories += 1
         else:
             kenku_victories += 1
