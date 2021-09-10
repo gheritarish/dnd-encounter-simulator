@@ -82,10 +82,11 @@ class Monster(Creature):
         dice_roll = dice.roll("1d20")[0]
         to_hit = dice_roll + self.proficiency + self.modifiers[weapon.stat_to_hit]
 
-        if to_hit >= opponent.armor_class:
+        if dice_roll == 20:
+            critical_hit = True
             hit = True
-            if dice_roll == 20:
-                critical_hit = True
+        elif to_hit >= opponent.armor_class:
+            hit = True
         else:
             hit = False
 
