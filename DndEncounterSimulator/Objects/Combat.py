@@ -12,7 +12,7 @@ class Combat:
         """
         Method to sort the initiatives of the creatures in a fight.
         """
-        self.fighters.sort(key=lambda x: x.initiative)
+        self.fighters.sort(key=lambda x: x.initiative, reverse=True)
 
     def is_over(self) -> bool:
         """
