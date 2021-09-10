@@ -36,7 +36,13 @@ class Combat:
         while not self.is_over():
             for fighter in self.fighters:
                 index_opponent = fighter.find_opponent(self.fighters)
-                fighter.attack(self.fighters[index_opponent], weapon=fighter.weapons[0])
-                if self.fighters[index_opponent].dead:
-                    self.fighters.pop(index_opponent)
+                if isinstance(index_opponent, int):
+                    fighter.attack(
+                        self.fighters[index_opponent],
+                        weapon=fighter.weapons[0],
+                    )
+                    if self.fighters[index_opponent].dead:
+                        self.fighters.pop(index_opponent)
+                else:
+                    return self.fighters[0].camp
         return self.fighters[0].camp
