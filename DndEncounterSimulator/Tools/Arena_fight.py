@@ -5,8 +5,8 @@ from tqdm import tqdm
 
 from DndEncounterSimulator.Objects.Creature import Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
-from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 from DndEncounterSimulator.Tools.utils.initiatives import sort_initiatives
+from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
 
 def define_args():
@@ -51,7 +51,7 @@ def main():
 
         fighters = [kenku, goblin]
         fighters = sort_initiatives(fighters)
-        while not(fighters[0].dead or fighters[1].dead):
+        while not (fighters[0].dead or fighters[1].dead):
             fighters[0].attack(opponent=fighters[1], weapon=fighters[0].weapons[0])
             if not fighters[1].dead:
                 fighters[1].attack(opponent=fighters[0], weapon=fighters[1].weapons[0])
