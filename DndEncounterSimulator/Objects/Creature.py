@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import dice
 
@@ -18,6 +18,7 @@ class Creature:
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
+        camp: str,
     ):
         self.name = name
         self.hit_points = int(hit_points)
@@ -30,6 +31,7 @@ class Creature:
         }
         self.dead = False
         self.initiative = self.roll_initiative()
+        self.camp = str(camp)
 
     def roll_initiative(self) -> int:
         """
@@ -60,6 +62,7 @@ class Monster(Creature):
         stats: Dict,
         weapons: List[Weapon],
         proficiency: int,
+        camp: str,
     ):
         super(Monster, self).__init__(
             name=name,
@@ -67,6 +70,7 @@ class Monster(Creature):
             armor_class=armor_class,
             stats=stats,
             weapons=weapons,
+            camp=camp,
         )
         self.proficiency = int(proficiency)
 
@@ -100,3 +104,16 @@ class Monster(Creature):
                 opponent.damage(
                     dice.roll(weapon.damage)[0] + self.modifiers[weapon.stat_to_hit]
                 )
+
+    def find_opponent(self, fighters: List[Creature]) -> Union[None, int]:
+        """
+        Method to find which opponent to fight in a list of creatures.
+        This method finds an opponent of another camp, so it doesn't attack an ally.
+
+        :param fighters: (List[Creatures]) the list of creatures in the fight.
+        :return: (Union[None, int]) the index of the first enemy found, None otherwise.
+        """
+        for (index, fighter) in enumerate(fighters):
+            if fighter.camp != self.camp:
+                return index
+        return None
