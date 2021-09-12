@@ -1,8 +1,9 @@
-import pytest
 import json
 
-from DndEncounterSimulator.Objects.Creature import Creature, Monster
+import pytest
+
 from DndEncounterSimulator.Objects.Combat import Combat
+from DndEncounterSimulator.Objects.Creature import Creature, Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
@@ -24,7 +25,7 @@ def test_combat_is_over_same_camp(enemies_definition_test):
         weapons=[scimitar],
         stats=STATS_KENKU,
         proficiency=standard_values_enemies[0]["proficiency"],
-        camp="red"
+        camp="red",
     )
 
     shortsword = Weapon(stat_to_hit="dexterity", damage="1d6")
@@ -35,7 +36,7 @@ def test_combat_is_over_same_camp(enemies_definition_test):
         weapons=[shortsword],
         stats=STATS_GOBLIN,
         proficiency=standard_values_enemies[1]["proficiency"],
-        camp="red"
+        camp="red",
     )
 
     test_combat = Combat(monsters=[kenku, goblin])
@@ -56,7 +57,7 @@ def test_combat_is_over_different_camp(enemies_definition_test):
         weapons=[scimitar],
         stats=STATS_KENKU,
         proficiency=standard_values_enemies[0]["proficiency"],
-        camp="red"
+        camp="red",
     )
 
     shortsword = Weapon(stat_to_hit="dexterity", damage="1d6")
@@ -67,7 +68,7 @@ def test_combat_is_over_different_camp(enemies_definition_test):
         weapons=[shortsword],
         stats=STATS_GOBLIN,
         proficiency=standard_values_enemies[1]["proficiency"],
-        camp="blue"
+        camp="blue",
     )
 
     test_combat = Combat(monsters=[kenku, goblin])

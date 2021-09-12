@@ -95,15 +95,10 @@ class Monster(Creature):
             hit = False
 
         if hit:
-            if critical_hit:
-                opponent.damage(
-                    dice.roll(weapon.critical_hit())[0]
-                    + self.modifiers[weapon.stat_to_hit]
-                )
-            else:
-                opponent.damage(
-                    dice.roll(weapon.damage)[0] + self.modifiers[weapon.stat_to_hit]
-                )
+            damage_dealt = weapon.deal_damage(
+                modifier=self.modifiers[weapon.stat_to_hit], critical_hit=critical_hit
+            )
+            opponent.damage(damage_dealt)
 
     def find_opponent(self, fighters: List[Creature]) -> Union[None, int]:
         """
