@@ -4,8 +4,22 @@ import psycopg2.extras
 
 
 class Database:
-    def __init__(self, params=None, connection=None):
-        self.params = params
+    def __init__(
+        self,
+        user: str,
+        database: str,
+        password: str,
+        host: str = "localhost",
+        port: int = 5432,
+        connection=None
+    ):
+        self.params = {
+            "user": user,
+            "database": database,
+            "password": password,
+            "host": host,
+            "port": port,
+        }
         self.connection = connection
         self.cursor = None
         self.set_connection()
