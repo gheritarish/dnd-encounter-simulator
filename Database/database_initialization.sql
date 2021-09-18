@@ -95,7 +95,7 @@ CREATE SEQUENCE public.spell_id_seq
     CACHE 1;
 
 -- Create table to store spells
-DROP TABLE IF EXISTS public.spells;
+DROP TABLE IF EXISTS public.spells CASCADE;
 CREATE TABLE public.spells
 (
     id_spell INTEGER NOT NULL DEFAULT nextval('public.spell_id_seq'::regclass),
@@ -115,6 +115,62 @@ ALTER TABLE public.spells ADD CONSTRAINT spell_pkey
 PRIMARY KEY (id_spell);
 
 GRANT ALL ON public.spells TO postgres;
+
+
+-- Create sequence for classes id
+DROP SEQUENCE IF EXISTS public.class_id_seq CASCADE;
+CREATE SEQUENCE public.class_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 100
+    CACHE 1;
+
+-- Create table to store classes
+DROP TABLE IF EXISTS public.classes CASCADE;
+CREATE TABLE public.classes
+(
+    id_class INTEGER NOT NULL DEFAULT nextval('public.class_id_seq'::regclass),
+    name CHARACTER VARYING(100)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.classes ADD CONSTRAINT class_pkey
+PRIMARY KEY (id_class);
+
+GRANT ALL ON public.classes TO postgres;
+
+
+-- Create table to know which classes can cast which spells
+DROP TABLE IF EXISTS public.class_spells;
+CREATE TABLE public.class_spells
+(
+    spell_id INTEGER NOT NULL,
+    class_id INTEGER NOT NULL
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.class_spells ADD CONSTRAINT class_spell_pkey
+PRIMARY KEY (spell_id, class_id);
+
+GRANT ALL ON public.class_spells TO postgres;
+
+-- Add foreign key for spells and classes
+ALTER TABLE public.class_spells ADD CONSTRAINT fk_id_spell
+FOREIGN KEY (spell_id) REFERENCES public.spells (id_spell) MATCH SIMPLE ON
+UPDATE CASCADE ON
+DELETE CASCADE;
+
+ALTER TABLE public.class_spells ADD CONSTRAINT fk_id_class
+FOREIGN KEY (class_id) REFERENCES public.classes (id_class) MATCH SIMPLE ON
+UPDATE CASCADE ON
+DELETE CASCADE;
 
 
 -- Create sequence for condition id
