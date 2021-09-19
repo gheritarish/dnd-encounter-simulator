@@ -1,4 +1,5 @@
 import logging
+
 import psycopg2
 import psycopg2.extras
 
@@ -11,7 +12,7 @@ class Database:
         password: str,
         host: str = "localhost",
         port: int = 5432,
-        connection=None
+        connection=None,
     ):
         self.params = {
             "user": user,
