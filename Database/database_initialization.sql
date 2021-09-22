@@ -103,6 +103,8 @@ CREATE TABLE public.spells
     modifier BOOLEAN,
     attack BOOLEAN,
     saving_throw saving_throw_type NOT NULL DEFAULT 'none',
+    casting_time CHARACTER VARYING,
+    duration CHARACTER VARYING,
     condition_id INTEGER,
     concentration BOOLEAN
 )
