@@ -3,7 +3,7 @@ import json
 import pytest
 
 from DndEncounterSimulator.Objects.Combat import Combat
-from DndEncounterSimulator.Objects.Creature import Creature, Monster
+from DndEncounterSimulator.Objects.Creature import Monster
 from DndEncounterSimulator.Objects.Weapon import Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
