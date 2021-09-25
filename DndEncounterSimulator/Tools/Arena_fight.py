@@ -1,6 +1,6 @@
 import argparse
-import logging
 
+from loguru import logger
 from tqdm import tqdm
 
 from DndEncounterSimulator.Objects.Combat import Combat
@@ -23,7 +23,6 @@ def define_args():
 
 
 def main():
-    logging.getLogger().setLevel(logging.INFO)
     args = define_args()
 
     goblin_victories = 0
@@ -59,7 +58,7 @@ def main():
         else:
             kenku_victories += 1
 
-    logging.info(
+    logger.info(
         f"Kenku victories: {kenku_victories}, goblin victories: {goblin_victories}"
     )
 
