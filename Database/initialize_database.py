@@ -1,3 +1,13 @@
+"""
+Script to initialize the database by creating the tables, sequences and constraints.
+
+Args:
+    --database: (str) The name of the database on which to implement the schema
+    --user: (str) The user connecting to the database, postgres is the default
+    --port: (int) The port on which the database is, 5432 is the default
+    --password: (str) The password to connect to the database
+    --host: (str) The host on which the database is, localhost is the default
+"""
 import argparse
 import sys
 
