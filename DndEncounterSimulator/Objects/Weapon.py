@@ -2,7 +2,8 @@ import dice
 
 
 class Weapon:
-    def __init__(self, stat_to_hit: str, damage: str):
+    def __init__(self, name: str, stat_to_hit: str, damage: str):
+        self.name = str(name)
         self.stat_to_hit = str(stat_to_hit)
         self.damage = str(damage)
 
