@@ -1,0 +1,22 @@
+[
+  {
+    "name": "scimitar",
+    "stat_to_hit": "dexterity",
+    "damage": "1d6"
+  },
+  {
+    "name": "shortsword",
+    "stat_to_hit": "dexterity",
+    "damage": "1d6"
+  },
+  {
+    "name": "longsword",
+    "stat_to_hit": "strength",
+    "damage": "1d8"
+  },
+  {
+    "name": "falchion",
+    "stat_to_hit": "dexterity",
+    "damage": "2d4"
+  }
+]
