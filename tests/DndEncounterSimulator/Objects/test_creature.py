@@ -7,14 +7,16 @@ from DndEncounterSimulator.Objects.Weapon import Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_KENKU
 
 
+@pytest.fixture()
 def weapons_definition_test():
     with open("tests/DndEncounterSimulator/Objects/fixtures/weapons.json", "r") as f:
         standard_weapons = json.load(f)
     return standard_weapons
 
 
-def create_kenku_w_weapons():
-    standard_weapons = weapons_definition_test()
+@pytest.fixture()
+def create_kenku_w_weapons(weapons_definition_test):
+    standard_weapons = weapons_definition_test
     scimitar = Weapon(
         name=standard_weapons[0]["name"],
         stat_to_hit=standard_weapons[0]["stat_to_hit"],
@@ -47,8 +49,8 @@ def create_kenku_w_weapons():
     return kenku
 
 
-def test_find_best_weapon():
-    kenku = create_kenku_w_weapons()
+def test_find_best_weapon(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
     best_weapon_index = kenku.find_best_weapon()
     try:
         assert best_weapon_index == 3
@@ -56,8 +58,8 @@ def test_find_best_weapon():
         pytest.fail(f"Failed to find best weapon. Error: {error}")
 
 
-def test_change_weapon():
-    kenku = create_kenku_w_weapons()
+def test_change_weapon(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
     kenku.change_weapon(2)  # we want the longsword
     try:
         assert kenku.weapons[0].name == "longsword"
@@ -65,8 +67,8 @@ def test_change_weapon():
         pytest.fail(f"Failed to change weapon. Error: {error}")
 
 
-def test_change_weapon_outside_range():
-    kenku = create_kenku_w_weapons()
+def test_change_weapon_outside_range(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
     kenku.change_weapon(5)  # outside range: no change should be made
     try:
         assert kenku.weapons[0].name == "scimitar"
