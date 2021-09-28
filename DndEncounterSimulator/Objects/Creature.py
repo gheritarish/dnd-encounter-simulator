@@ -55,7 +55,8 @@ class Creature:
 
     def change_weapon(self, index: int):
         """
-        Method to change to the weapon references by the index : this weapon will be placed at index 0 for use in combat
+        Method to change to the weapon referenced by the index: this weapon will be placed at index 0 for use in combat
+
         :param index: (int) the index referencing a weapon in weapons list
         """
         try:
@@ -128,24 +129,28 @@ class Monster(Creature):
     def find_best_weapon(self) -> int:
         """
         Method to find the best weapon (ie deals statistically the more damage)
+
         #TODO: add options and limitations for two-handed, ranged, damage immunity...
+
         :return: (int) the index of the best weapon to use
         """
-        best = 0  # we assume we have at least one weapon
-        best_damage = self.weapons[best].damage
+        best_weapon = 0  # we assume we have at least one weapon
+        best_damage = self.weapons[best_weapon].damage
         best_sum = int(best_damage.split("d")[0]) * int(best_damage.split("d")[1])
         for (index, weapon) in enumerate(self.weapons):
-            tmp_damage = weapon.damage
-            tmp_sum = int(tmp_damage.split("d")[0]) * int(tmp_damage.split("d")[1])
+            temporary_damage = weapon.damage
+            temporary_sum = int(temporary_damage.split("d")[0]) * int(
+                temporary_damage.split("d")[1]
+            )
             # comparison by max damage possible
-            if tmp_sum > best_sum:
-                best = index
-                best_sum = tmp_sum
-                best_damage = tmp_damage
-            elif tmp_sum == best_sum:
-                # here we chose the best weapon as having the more dice rolled : higher mean
-                if int(tmp_damage.split("d")[0]) > int(best_damage.split("d")[0]):
-                    best = index
-                    best_sum = tmp_sum
-                    best_damage = tmp_damage
-        return best
+            if temporary_sum > best_sum:
+                best_weapon = index
+                best_sum = temporary_sum
+                best_damage = temporary_damage
+            elif temporary_sum == best_sum:
+                # here we chose the best weapon as having the more dice rolled: higher mean
+                if int(temporary_damage.split("d")[0]) > int(best_damage.split("d")[0]):
+                    best_weapon = index
+                    best_sum = temporary_sum
+                    best_damage = temporary_damage
+        return best_weapon
