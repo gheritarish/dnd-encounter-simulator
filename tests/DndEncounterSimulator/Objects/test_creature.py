@@ -65,6 +65,25 @@ def test_find_best_weapon(create_kenku_w_weapons):
         pytest.fail(f"Failed to find best weapon. Error: {error}")
 
 
+def test_to_find_best_weapon_without_weapon():
+    kenku = Monster(
+        name="kenku",
+        armor_class=13,
+        hit_points=13,
+        proficiency=2,
+        stats=STATS_KENKU,
+        weapons=[],
+        resistances=[],
+        immunities=[],
+        vulnerabilities=[],
+        camp="red",
+    )
+    with pytest.raises(IndexError):
+        assert kenku.find_best_weapon(
+            known_resistances=[], known_immunities=[], known_vulnerabilities=[]
+        )
+
+
 def test_change_weapon(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
     kenku.change_weapon(2)  # we want the longsword
