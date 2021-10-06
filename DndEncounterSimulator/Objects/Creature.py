@@ -19,6 +19,8 @@ class Creature:
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
+        resistances: List[str],
+        vulnerabilities: List[str],
         camp: str,
     ):
         self.name = name
@@ -30,6 +32,8 @@ class Creature:
         self.modifiers = {
             key: convert_stat_to_mod(value) for (key, value) in self.stats.items()
         }
+        self.resistances = [resistance for resistance in resistances]
+        self.vulnerabilities = [vulnerability for vulnerability in vulnerabilities]
         self.dead = False
         self.initiative = self.roll_initiative()
         self.camp = str(camp)
@@ -74,6 +78,8 @@ class Monster(Creature):
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
+        resistances: List[str],
+        vulnerabilities: List[str],
         proficiency: int,
         camp: str,
     ):
@@ -83,6 +89,8 @@ class Monster(Creature):
             armor_class=armor_class,
             stats=stats,
             weapons=weapons,
+            resistances=resistances,
+            vulnerabilities=vulnerabilities,
             camp=camp,
         )
         self.proficiency = int(proficiency)
