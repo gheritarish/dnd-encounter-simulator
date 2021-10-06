@@ -21,21 +21,25 @@ def create_kenku_w_weapons(weapons_definition_test):
         name=standard_weapons[0]["name"],
         stat_to_hit=standard_weapons[0]["stat_to_hit"],
         damage=standard_weapons[0]["damage"],
+        type_of_damage="slashing",
     )
     shortsword = Weapon(
         name=standard_weapons[1]["name"],
         stat_to_hit=standard_weapons[1]["stat_to_hit"],
         damage=standard_weapons[1]["damage"],
+        type_of_damage="slashing",
     )
     longsword = Weapon(
         name=standard_weapons[2]["name"],
         stat_to_hit=standard_weapons[2]["stat_to_hit"],
         damage=standard_weapons[2]["damage"],
+        type_of_damage="slashing",
     )
     falchion = Weapon(
         name=standard_weapons[3]["name"],
         stat_to_hit=standard_weapons[3]["stat_to_hit"],
         damage=standard_weapons[3]["damage"],
+        type_of_damage="slashing",
     )
     kenku = Monster(
         name="kenku",
@@ -44,6 +48,9 @@ def create_kenku_w_weapons(weapons_definition_test):
         proficiency=2,
         stats=STATS_KENKU,
         weapons=[scimitar, shortsword, longsword, falchion],
+        resistances=[],
+        immunities=[],
+        vulnerabilities=[],
         camp="red",
     )
     return kenku

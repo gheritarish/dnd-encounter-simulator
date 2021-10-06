@@ -20,6 +20,7 @@ class Creature:
         stats: Dict,
         weapons: List[Weapon],
         resistances: List[str],
+        immunities: List[str],
         vulnerabilities: List[str],
         camp: str,
     ):
@@ -33,6 +34,7 @@ class Creature:
             key: convert_stat_to_mod(value) for (key, value) in self.stats.items()
         }
         self.resistances = [resistance for resistance in resistances]
+        self.immunities = [immunity for immunity in immunities]
         self.vulnerabilities = [vulnerability for vulnerability in vulnerabilities]
         self.dead = False
         self.initiative = self.roll_initiative()
@@ -47,13 +49,22 @@ class Creature:
         initiative = dice.roll("1d20")[0] + self.modifiers["dexterity"]
         return initiative
 
-    def damage(self, damages: int):
+    def damage(self, damages: int, type_of_damage: str):
         """
         Method to remove HP when a Creature takes a hit.
 
         :param damages: (int) The quantity of damage done
+        :param type_of_damage: (str) The type of damage dealt by the attack
         """
-        self.hit_points -= damages
+        if type_of_damage in self.resistances:
+            self.hit_points -= damages // 2
+        elif type_of_damage in self.immunities:
+            self.hit_points = self.hit_points
+        elif type_of_damage in self.vulnerabilities:
+            self.hit_points -= damages * 2
+        else:
+            self.hit_points -= damages
+
         if self.hit_points <= 0:
             self.dead = True
 
@@ -67,7 +78,7 @@ class Creature:
             choice = self.weapons.pop(index)
             self.weapons.insert(0, choice)
         except Exception as error:
-            logger.info(f"Error: {error}, weapon not changed")
+            logger.warning(f"Error: {error}, weapon not changed")
 
 
 class Monster(Creature):
@@ -79,6 +90,7 @@ class Monster(Creature):
         stats: Dict,
         weapons: List[Weapon],
         resistances: List[str],
+        immunities: List[str],
         vulnerabilities: List[str],
         proficiency: int,
         camp: str,
@@ -90,6 +102,7 @@ class Monster(Creature):
             stats=stats,
             weapons=weapons,
             resistances=resistances,
+            immunities=immunities,
             vulnerabilities=vulnerabilities,
             camp=camp,
         )
@@ -119,7 +132,7 @@ class Monster(Creature):
             damage_dealt = weapon.deal_damage(
                 modifier=self.modifiers[weapon.stat_to_hit], critical_hit=critical_hit
             )
-            opponent.damage(damage_dealt)
+            opponent.damage(damages=damage_dealt, type_of_damage=weapon.type_of_damage)
 
     def find_opponent(self, fighters: List[Creature]) -> Union[None, int]:
         """
@@ -134,7 +147,12 @@ class Monster(Creature):
                 return index
         return None
 
-    def find_best_weapon(self) -> int:
+    def find_best_weapon(
+        self,
+        known_resistances: List[str] = [],
+        known_immunities: List[str] = [],
+        known_vulnerabilities: List[str] = [],
+    ) -> int:
         """
         Method to find the best weapon (ie deals statistically the more damage)
 
@@ -142,23 +160,32 @@ class Monster(Creature):
 
         :return: (int) the index of the best weapon to use
         """
-        best_weapon = 0  # we assume we have at least one weapon
-        best_damage = self.weapons[best_weapon].damage
-        best_sum = int(best_damage.split("d")[0]) * int(best_damage.split("d")[1])
+        if len(self.weapons) == 0:
+            raise IndexError("This monster has no weapon.")
+
+        best_weapon = 0
+        if self.weapons[best_weapon].type_of_damage in known_resistances:
+            best_mean = self.weapons[best_weapon].average_damage() / 2
+        elif self.weapons[best_weapon].type_of_damage in known_immunities:
+            best_mean = 0
+        elif self.weapons[best_weapon].type_of_damage in known_vulnerabilities:
+            best_mean = self.weapons[best_weapon].average_damage() * 2
+        else:
+            best_mean = self.weapons[best_weapon].average_damage()
+
         for (index, weapon) in enumerate(self.weapons):
             temporary_damage = weapon.damage
-            temporary_sum = int(temporary_damage.split("d")[0]) * int(
-                temporary_damage.split("d")[1]
-            )
-            # comparison by max damage possible
-            if temporary_sum > best_sum:
+            if weapon.type_of_damage in known_resistances:
+                temporary_mean = weapon.average_damage() / 2
+            elif weapon.type_of_damage in known_immunities:
+                temporary_mean = 0
+            elif weapon.type_of_damage in known_vulnerabilities:
+                temporary_mean = weapon.average_damage() * 2
+            else:
+                temporary_mean = weapon.average_damage()
+
+            # comparison by max damage possible. No change if both means are identical
+            if temporary_mean > best_mean:
                 best_weapon = index
-                best_sum = temporary_sum
-                best_damage = temporary_damage
-            elif temporary_sum == best_sum:
-                # here we chose the best weapon as having the more dice rolled: higher mean
-                if int(temporary_damage.split("d")[0]) > int(best_damage.split("d")[0]):
-                    best_weapon = index
-                    best_sum = temporary_sum
-                    best_damage = temporary_damage
+                best_mean = temporary_mean
         return best_weapon
