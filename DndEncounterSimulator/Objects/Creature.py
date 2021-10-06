@@ -174,7 +174,6 @@ class Monster(Creature):
             best_mean = self.weapons[best_weapon].average_damage()
 
         for (index, weapon) in enumerate(self.weapons):
-            temporary_damage = weapon.damage
             if weapon.type_of_damage in known_resistances:
                 temporary_mean = weapon.average_damage() / 2
             elif weapon.type_of_damage in known_immunities:

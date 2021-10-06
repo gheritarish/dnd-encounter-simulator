@@ -43,5 +43,5 @@ class Weapon:
         """
         number_of_dice = int(self.damage.split("d")[0])
         damage_of_dice = int(self.damage.split("d")[1])
-        average_damage = (number_of_dice + number_of_dice*damage_of_dice) / 2
+        average_damage = (number_of_dice + number_of_dice * damage_of_dice) / 2
         return average_damage

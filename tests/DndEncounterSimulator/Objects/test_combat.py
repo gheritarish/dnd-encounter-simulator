@@ -17,7 +17,12 @@ def enemies_definition_test():
 
 def test_combat_is_over_same_camp(enemies_definition_test):
     standard_values_enemies = enemies_definition_test
-    scimitar = Weapon(name="scimitar", stat_to_hit="dexterity", damage="1d6", type_of_damage="slashing")
+    scimitar = Weapon(
+        name="scimitar",
+        stat_to_hit="dexterity",
+        damage="1d6",
+        type_of_damage="slashing",
+    )
     kenku = Monster(
         name=standard_values_enemies[0]["name"],
         armor_class=standard_values_enemies[0]["armor_class"],
@@ -31,7 +36,12 @@ def test_combat_is_over_same_camp(enemies_definition_test):
         camp="red",
     )
 
-    shortsword = Weapon(name="shortsword", stat_to_hit="dexterity", damage="1d6", type_of_damage="slashing")
+    shortsword = Weapon(
+        name="shortsword",
+        stat_to_hit="dexterity",
+        damage="1d6",
+        type_of_damage="slashing",
+    )
     goblin = Monster(
         name=standard_values_enemies[1]["name"],
         armor_class=standard_values_enemies[1]["armor_class"],
@@ -55,7 +65,12 @@ def test_combat_is_over_same_camp(enemies_definition_test):
 
 def test_combat_is_over_different_camp(enemies_definition_test):
     standard_values_enemies = enemies_definition_test
-    scimitar = Weapon(name="scimitar", stat_to_hit="dexterity", damage="1d6", type_of_damage="slashing")
+    scimitar = Weapon(
+        name="scimitar",
+        stat_to_hit="dexterity",
+        damage="1d6",
+        type_of_damage="slashing",
+    )
     kenku = Monster(
         name=standard_values_enemies[0]["name"],
         armor_class=standard_values_enemies[0]["armor_class"],
@@ -69,7 +84,12 @@ def test_combat_is_over_different_camp(enemies_definition_test):
         camp="red",
     )
 
-    shortsword = Weapon(name="shortsword", stat_to_hit="dexterity", damage="1d6", type_of_damage="slashing")
+    shortsword = Weapon(
+        name="shortsword",
+        stat_to_hit="dexterity",
+        damage="1d6",
+        type_of_damage="slashing",
+    )
     goblin = Monster(
         name=standard_values_enemies[1]["name"],
         armor_class=standard_values_enemies[1]["armor_class"],
