@@ -2,10 +2,11 @@ import dice
 
 
 class Weapon:
-    def __init__(self, name: str, stat_to_hit: str, damage: str):
+    def __init__(self, name: str, stat_to_hit: str, damage: str, type_of_damage: str):
         self.name = str(name)
         self.stat_to_hit = str(stat_to_hit)
         self.damage = str(damage)
+        self.type_of_damage = str(type_of_damage)
 
     def critical_hit(self) -> str:
         """
@@ -33,3 +34,14 @@ class Weapon:
             damage_dice = self.damage
         damage = dice.roll(damage_dice)[0] + modifier
         return damage
+
+    def average_damage(self) -> float:
+        """
+        Method to return the maximal number of damage dealt by the weapon.
+
+        :return: (int) The maximal number of damage dealt by the weapon
+        """
+        number_of_dice = int(self.damage.split("d")[0])
+        damage_of_dice = int(self.damage.split("d")[1])
+        average_damage = (number_of_dice + number_of_dice * damage_of_dice) / 2
+        return average_damage

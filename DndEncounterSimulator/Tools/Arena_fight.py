@@ -28,24 +28,40 @@ def main():
     goblin_victories = 0
     kenku_victories = 0
     for _ in tqdm(range(args.simulations)):
-        scimitar = Weapon(name="scimitar", stat_to_hit="dexterity", damage="1d6")
+        scimitar = Weapon(
+            name="scimitar",
+            stat_to_hit="dexterity",
+            damage="1d6",
+            type_of_damage="slashing",
+        )
         goblin = Monster(
             name="goblin",
             hit_points=7,
             armor_class=15,
             stats=STATS_GOBLIN,
             weapons=[scimitar],
+            resistances=[],
+            immunities=[],
+            vulnerabilities=[],
             proficiency=2,
             camp="blue",
         )
 
-        shortsword = Weapon(name="shortsword", stat_to_hit="dexterity", damage="1d6")
+        shortsword = Weapon(
+            name="shortsword",
+            stat_to_hit="dexterity",
+            damage="1d6",
+            type_of_damage="slashing",
+        )
         kenku = Monster(
             name="kenku",
             hit_points=13,
             armor_class=13,
             stats=STATS_KENKU,
             weapons=[shortsword],
+            resistances=[],
+            immunities=[],
+            vulnerabilities=[],
             proficiency=2,
             camp="red",
         )
