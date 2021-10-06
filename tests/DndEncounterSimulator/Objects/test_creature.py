@@ -21,25 +21,31 @@ def create_kenku_w_weapons(weapons_definition_test):
         name=standard_weapons[0]["name"],
         stat_to_hit=standard_weapons[0]["stat_to_hit"],
         damage=standard_weapons[0]["damage"],
-        type_of_damage="slashing",
+        type_of_damage=standard_weapons[0]["type_of_damage"],
     )
     shortsword = Weapon(
         name=standard_weapons[1]["name"],
         stat_to_hit=standard_weapons[1]["stat_to_hit"],
         damage=standard_weapons[1]["damage"],
-        type_of_damage="slashing",
+        type_of_damage=standard_weapons[1]["type_of_damage"],
     )
     longsword = Weapon(
         name=standard_weapons[2]["name"],
         stat_to_hit=standard_weapons[2]["stat_to_hit"],
         damage=standard_weapons[2]["damage"],
-        type_of_damage="slashing",
+        type_of_damage=standard_weapons[2]["type_of_damage"],
     )
     falchion = Weapon(
         name=standard_weapons[3]["name"],
         stat_to_hit=standard_weapons[3]["stat_to_hit"],
         damage=standard_weapons[3]["damage"],
-        type_of_damage="slashing",
+        type_of_damage=standard_weapons[3]["type_of_damage"],
+    )
+    quarterstaff = Weapon(
+        name=standard_weapons[4]["name"],
+        stat_to_hit=standard_weapons[4]["stat_to_hit"],
+        damage=standard_weapons[4]["damage"],
+        type_of_damage=standard_weapons[4]["type_of_damage"],
     )
     kenku = Monster(
         name="kenku",
@@ -47,7 +53,7 @@ def create_kenku_w_weapons(weapons_definition_test):
         hit_points=13,
         proficiency=2,
         stats=STATS_KENKU,
-        weapons=[scimitar, shortsword, longsword, falchion],
+        weapons=[scimitar, shortsword, longsword, falchion, quarterstaff],
         resistances=[],
         immunities=[],
         vulnerabilities=[],
@@ -95,8 +101,35 @@ def test_change_weapon(create_kenku_w_weapons):
 
 def test_change_weapon_outside_range(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
-    kenku.change_weapon(5)  # outside range: no change should be made
+    kenku.change_weapon(6)  # outside range: no change should be made
     try:
         assert kenku.weapons[0].name == "scimitar"
     except Exception as error:
         pytest.fail(f"Failed to prevent weapon change outside range. Error: {error}")
+
+
+def test_choose_weapon_with_vulnerability(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
+    best_weapon_index = kenku.find_best_weapon(known_vulnerabilities=["bludgeoning"])
+    try:
+        assert best_weapon_index == 4
+    except Exception as error:
+        pytest.fail(f"Failed to find best weapon with vulnerability. Error: {error}")
+
+
+def test_choose_weapon_with_resistance(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
+    best_weapon_index = kenku.find_best_weapon(known_resistances=["slashing"])
+    try:
+        assert best_weapon_index == 4
+    except Exception as error:
+        pytest.fail(f"Failed to find best weapon with resistance. Error: {error}")
+
+
+def test_choose_weapon_with_immunity(create_kenku_w_weapons):
+    kenku = create_kenku_w_weapons
+    best_weapon_index = kenku.find_best_weapon(known_immunities=["slashing"])
+    try:
+        assert best_weapon_index == 4
+    except Exception as error:
+        pytest.fail(f"Failed to find best weapon with immunity. Error: {error}")
