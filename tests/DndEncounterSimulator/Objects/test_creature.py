@@ -112,7 +112,7 @@ def test_choose_weapon_with_vulnerability(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
     best_weapon_index = kenku.find_best_weapon(known_vulnerabilities=["bludgeoning"])
     try:
-        assert best_weapon_index == 4
+        assert best_weapon_index == 4  # With vulnerability, best weapon is the staff
     except Exception as error:
         pytest.fail(f"Failed to find best weapon with vulnerability. Error: {error}")
 
@@ -121,7 +121,7 @@ def test_choose_weapon_with_resistance(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
     best_weapon_index = kenku.find_best_weapon(known_resistances=["slashing"])
     try:
-        assert best_weapon_index == 4
+        assert best_weapon_index == 4  # With resistance, best weapon is the staff
     except Exception as error:
         pytest.fail(f"Failed to find best weapon with resistance. Error: {error}")
 
@@ -130,6 +130,66 @@ def test_choose_weapon_with_immunity(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
     best_weapon_index = kenku.find_best_weapon(known_immunities=["slashing"])
     try:
-        assert best_weapon_index == 4
+        assert best_weapon_index == 4  # With immunity, best weapon is the staff
     except Exception as error:
         pytest.fail(f"Failed to find best weapon with immunity. Error: {error}")
+
+
+def test_damage_with_resistance():
+    kenku = Monster(
+        name="kenku",
+        armor_class=13,
+        hit_points=13,
+        proficiency=2,
+        stats=STATS_KENKU,
+        weapons=[],
+        resistances=["bludgeoning"],
+        immunities=[],
+        vulnerabilities=[],
+        camp="red",
+    )
+    kenku.damage(5, "bludgeoning")
+    try:
+        kenku.hit_points == 11  # Resistance divides 5 by 2, rounded down
+    except Exception as error:
+        pytest.fail(f"Failed to take resistance into account. Error: {error}")
+
+
+def test_damage_with_immunity():
+    kenku = Monster(
+        name="kenku",
+        armor_class=13,
+        hit_points=13,
+        proficiency=2,
+        stats=STATS_KENKU,
+        weapons=[],
+        resistances=[],
+        immunities=["bludgeoning"],
+        vulnerabilities=[],
+        camp="red",
+    )
+    kenku.damage(5, "bludgeoning")
+    try:
+        kenku.hit_points == 13  # With immunity, no damage taken
+    except Exception as error:
+        pytest.fail(f"Failed to take immunity into account. Error: {error}")
+
+
+def test_damage_with_vulnerability():
+    kenku = Monster(
+        name="kenku",
+        armor_class=13,
+        hit_points=13,
+        proficiency=2,
+        stats=STATS_KENKU,
+        weapons=[],
+        resistances=[],
+        immunities=[],
+        vulnerabilities=["bludgeoning"],
+        camp="red",
+    )
+    kenku.damage(5, "bludgeoning")
+    try:
+        kenku.hit_points == 3  # Vulnerability doubles the damages
+    except Exception as error:
+        pytest.fail(f"Failed to take resistance into account. Error: {error}")
