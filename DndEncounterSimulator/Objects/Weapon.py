@@ -1,12 +1,25 @@
 import dice
 
 
+class DamageType:
+    def __init__(self, name: str, magical: bool = False):
+        self.name = str(name)
+        self.magical = magical
+
+    def __eq__(self, other):
+        if isinstance(other, DamageType):
+            return self.name == other.name and self.magical == other.magical
+        return False
+
+
 class Weapon:
-    def __init__(self, name: str, stat_to_hit: str, damage: str, type_of_damage: str):
+    def __init__(
+        self, name: str, stat_to_hit: str, damage: str, type_of_damage: DamageType
+    ):
         self.name = str(name)
         self.stat_to_hit = str(stat_to_hit)
         self.damage = str(damage)
-        self.type_of_damage = str(type_of_damage)
+        self.type_of_damage = type_of_damage
 
     def critical_hit(self) -> str:
         """

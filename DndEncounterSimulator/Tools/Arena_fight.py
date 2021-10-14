@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 from DndEncounterSimulator.Objects.Combat import Combat
 from DndEncounterSimulator.Objects.Creature import Monster
-from DndEncounterSimulator.Objects.Weapon import Weapon
+from DndEncounterSimulator.Objects.Weapon import DamageType, Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_GOBLIN, STATS_KENKU
 
 
@@ -32,7 +32,7 @@ def main():
             name="scimitar",
             stat_to_hit="dexterity",
             damage="1d6",
-            type_of_damage="slashing",
+            type_of_damage=DamageType(name="slashing"),
         )
         goblin = Monster(
             name="goblin",
@@ -51,7 +51,7 @@ def main():
             name="shortsword",
             stat_to_hit="dexterity",
             damage="1d6",
-            type_of_damage="slashing",
+            type_of_damage=DamageType(name="slashing"),
         )
         kenku = Monster(
             name="kenku",

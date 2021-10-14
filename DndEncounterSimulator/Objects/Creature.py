@@ -4,7 +4,7 @@ import dice
 from loguru import logger
 
 from DndEncounterSimulator.Objects.utils.conversion import convert_stat_to_mod
-from DndEncounterSimulator.Objects.Weapon import Weapon
+from DndEncounterSimulator.Objects.Weapon import DamageType, Weapon
 
 
 class Creature:
@@ -19,9 +19,9 @@ class Creature:
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
-        resistances: List[str],
-        immunities: List[str],
-        vulnerabilities: List[str],
+        resistances: List[DamageType],
+        immunities: List[DamageType],
+        vulnerabilities: List[DamageType],
         camp: str,
     ):
         self.name = name
@@ -89,9 +89,9 @@ class Monster(Creature):
         armor_class: int,
         stats: Dict,
         weapons: List[Weapon],
-        resistances: List[str],
-        immunities: List[str],
-        vulnerabilities: List[str],
+        resistances: List[DamageType],
+        immunities: List[DamageType],
+        vulnerabilities: List[DamageType],
         proficiency: int,
         camp: str,
     ):
@@ -149,9 +149,9 @@ class Monster(Creature):
 
     def find_best_weapon(
         self,
-        known_resistances: List[str] = [],
-        known_immunities: List[str] = [],
-        known_vulnerabilities: List[str] = [],
+        known_resistances: List[DamageType] = [],
+        known_immunities: List[DamageType] = [],
+        known_vulnerabilities: List[DamageType] = [],
     ) -> int:
         """
         Method to find the best weapon (ie deals statistically the more damage)
