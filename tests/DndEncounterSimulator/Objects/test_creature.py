@@ -3,7 +3,7 @@ import json
 import pytest
 
 from DndEncounterSimulator.Objects.Creature import Monster
-from DndEncounterSimulator.Objects.Weapon import Weapon
+from DndEncounterSimulator.Objects.Weapon import DamageType, Weapon
 from DndEncounterSimulator.Tools.utils.Stats import STATS_KENKU
 
 
@@ -21,31 +21,46 @@ def create_kenku_w_weapons(weapons_definition_test):
         name=standard_weapons[0]["name"],
         stat_to_hit=standard_weapons[0]["stat_to_hit"],
         damage=standard_weapons[0]["damage"],
-        type_of_damage=standard_weapons[0]["type_of_damage"],
+        type_of_damage=DamageType(
+            name=standard_weapons[0]["type_of_damage"],
+            magical=standard_weapons[0]["magical_damage"],
+        ),
     )
     shortsword = Weapon(
         name=standard_weapons[1]["name"],
         stat_to_hit=standard_weapons[1]["stat_to_hit"],
         damage=standard_weapons[1]["damage"],
-        type_of_damage=standard_weapons[1]["type_of_damage"],
+        type_of_damage=DamageType(
+            name=standard_weapons[1]["type_of_damage"],
+            magical=standard_weapons[1]["magical_damage"],
+        ),
     )
     longsword = Weapon(
         name=standard_weapons[2]["name"],
         stat_to_hit=standard_weapons[2]["stat_to_hit"],
         damage=standard_weapons[2]["damage"],
-        type_of_damage=standard_weapons[2]["type_of_damage"],
+        type_of_damage=DamageType(
+            name=standard_weapons[2]["type_of_damage"],
+            magical=standard_weapons[2]["magical_damage"],
+        ),
     )
     falchion = Weapon(
         name=standard_weapons[3]["name"],
         stat_to_hit=standard_weapons[3]["stat_to_hit"],
         damage=standard_weapons[3]["damage"],
-        type_of_damage=standard_weapons[3]["type_of_damage"],
+        type_of_damage=DamageType(
+            name=standard_weapons[3]["type_of_damage"],
+            magical=standard_weapons[3]["magical_damage"],
+        ),
     )
     quarterstaff = Weapon(
         name=standard_weapons[4]["name"],
         stat_to_hit=standard_weapons[4]["stat_to_hit"],
         damage=standard_weapons[4]["damage"],
-        type_of_damage=standard_weapons[4]["type_of_damage"],
+        type_of_damage=DamageType(
+            name=standard_weapons[4]["type_of_damage"],
+            magical=standard_weapons[4]["magical_damage"],
+        ),
     )
     kenku = Monster(
         name="kenku",
@@ -110,7 +125,9 @@ def test_change_weapon_outside_range(create_kenku_w_weapons):
 
 def test_choose_weapon_with_vulnerability(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
-    best_weapon_index = kenku.find_best_weapon(known_vulnerabilities=["bludgeoning"])
+    best_weapon_index = kenku.find_best_weapon(
+        known_vulnerabilities=[DamageType("bludgeoning")]
+    )
     try:
         assert best_weapon_index == 4  # With vulnerability, best weapon is the staff
     except Exception as error:
@@ -119,7 +136,9 @@ def test_choose_weapon_with_vulnerability(create_kenku_w_weapons):
 
 def test_choose_weapon_with_resistance(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
-    best_weapon_index = kenku.find_best_weapon(known_resistances=["slashing"])
+    best_weapon_index = kenku.find_best_weapon(
+        known_resistances=[DamageType("slashing")]
+    )
     try:
         assert best_weapon_index == 4  # With resistance, best weapon is the staff
     except Exception as error:
@@ -128,7 +147,9 @@ def test_choose_weapon_with_resistance(create_kenku_w_weapons):
 
 def test_choose_weapon_with_immunity(create_kenku_w_weapons):
     kenku = create_kenku_w_weapons
-    best_weapon_index = kenku.find_best_weapon(known_immunities=["slashing"])
+    best_weapon_index = kenku.find_best_weapon(
+        known_immunities=[DamageType("slashing")]
+    )
     try:
         assert best_weapon_index == 4  # With immunity, best weapon is the staff
     except Exception as error:
@@ -143,7 +164,7 @@ def test_damage_with_resistance():
         proficiency=2,
         stats=STATS_KENKU,
         weapons=[],
-        resistances=["bludgeoning"],
+        resistances=[DamageType("bludgeoning")],
         immunities=[],
         vulnerabilities=[],
         camp="red",
@@ -164,7 +185,7 @@ def test_damage_with_immunity():
         stats=STATS_KENKU,
         weapons=[],
         resistances=[],
-        immunities=["bludgeoning"],
+        immunities=[DamageType("bludgeoning")],
         vulnerabilities=[],
         camp="red",
     )
@@ -185,7 +206,7 @@ def test_damage_with_vulnerability():
         weapons=[],
         resistances=[],
         immunities=[],
-        vulnerabilities=["bludgeoning"],
+        vulnerabilities=[DamageType("bludgeoning")],
         camp="red",
     )
     kenku.damage(5, "bludgeoning")

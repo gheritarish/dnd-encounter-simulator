@@ -1,11 +1,14 @@
 import pytest
 
-from DndEncounterSimulator.Objects.Weapon import Weapon
+from DndEncounterSimulator.Objects.Weapon import DamageType, Weapon
 
 
 def test_critical_hit():
     weapon = Weapon(
-        name="dummy", stat_to_hit="strength", damage="2d6", type_of_damage="bludgeoning"
+        name="dummy",
+        stat_to_hit="strength",
+        damage="2d6",
+        type_of_damage=DamageType("bludgeoning"),
     )
     critical_damage = weapon.critical_hit()
     try:
@@ -19,7 +22,7 @@ def test_average_damage_of_greatsword():
         name="greatsword",
         stat_to_hit="strength",
         damage="2d6",
-        type_of_damage="slashing",
+        type_of_damage=DamageType("slashing"),
     )
     mean_damage = weapon.average_damage()
     try:
@@ -33,7 +36,7 @@ def test_average_damage_of_shortsword():
         name="shortsword",
         stat_to_hit="dexterity",
         damage="1d6",
-        type_of_damage="slashing",
+        type_of_damage=DamageType("slashing"),
     )
     mean_damage = weapon.average_damage()
     try:

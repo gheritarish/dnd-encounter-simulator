@@ -3,30 +3,35 @@
     "name": "scimitar",
     "stat_to_hit": "dexterity",
     "damage": "1d6",
-    "type_of_damage": "slashing"
+    "type_of_damage": "slashing",
+    "magical_damage": false
   },
   {
     "name": "shortsword",
     "stat_to_hit": "dexterity",
     "damage": "1d6",
-    "type_of_damage": "slashing"
+    "type_of_damage": "slashing",
+    "magical_damage": false
   },
   {
     "name": "longsword",
     "stat_to_hit": "strength",
     "damage": "1d8",
-    "type_of_damage": "slashing"
+    "type_of_damage": "slashing",
+    "magical_damage": false
   },
   {
     "name": "falchion",
     "stat_to_hit": "dexterity",
     "damage": "2d4",
-    "type_of_damage": "slashing"
+    "type_of_damage": "slashing",
+    "magical_damage": false
   },
   {
     "name": "quarterstaff",
     "stat_to_hit": "strength",
     "damage": "1d8",
-    "type_of_damage": "bludgeoning"
+    "type_of_damage": "bludgeoning",
+    "magical_damage": false
   }
 ]
