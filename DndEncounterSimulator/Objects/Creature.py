@@ -153,7 +153,7 @@ class Monster(Creature):
                 if wounded_fighters[index] is True:
                     best_opponent = index
                 else:
-                    if not best_opponent:
+                    if not isinstance(best_opponent, int):
                         best_opponent = index
         return best_opponent
 
