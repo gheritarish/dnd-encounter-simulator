@@ -7,6 +7,7 @@ class Combat:
     def __init__(self, monsters: List[Monster]):
         self.fighters = monsters
         self.sort_initiatives()
+        self.wounded_fighters = [False for _ in self.fighters]
 
     def sort_initiatives(self):
         """
@@ -22,7 +23,9 @@ class Combat:
 
         :return: (bool) True if the fight is over, False otherwise.
         """
-        if isinstance(self.fighters[0].find_opponent(self.fighters), int):
+        if isinstance(
+            self.fighters[0].find_opponent(self.fighters, self.wounded_fighters), int
+        ):
             return False
         else:
             return True
@@ -35,12 +38,15 @@ class Combat:
         """
         while not self.is_over():
             for fighter in self.fighters:
-                index_opponent = fighter.find_opponent(self.fighters)
+                index_opponent = fighter.find_opponent(
+                    self.fighters, self.wounded_fighters
+                )
                 if isinstance(index_opponent, int):
                     fighter.attack(
                         self.fighters[index_opponent],
                         weapon=fighter.weapons[0],
                     )
+                    self.wounded_fighters[index_opponent] = True
                     if self.fighters[index_opponent].dead:
                         self.fighters.pop(index_opponent)
                 else:

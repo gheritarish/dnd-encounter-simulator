@@ -49,12 +49,12 @@ class Creature:
         initiative = dice.roll("1d20")[0] + self.modifiers["dexterity"]
         return initiative
 
-    def damage(self, damages: int, type_of_damage: str):
+    def damage(self, damages: int, type_of_damage: DamageType):
         """
         Method to remove HP when a Creature takes a hit.
 
         :param damages: (int) The quantity of damage done
-        :param type_of_damage: (str) The type of damage dealt by the attack
+        :param type_of_damage: (DamageType) The type of damage dealt by the attack
         """
         if type_of_damage in self.resistances:
             self.hit_points -= damages // 2
@@ -123,7 +123,7 @@ class Monster(Creature):
         if dice_roll == 20:
             critical_hit = True
             hit = True
-        elif to_hit >= opponent.armor_class:
+        elif to_hit >= opponent.armor_class and dice_roll != 1:
             hit = True
         else:
             hit = False
@@ -134,18 +134,28 @@ class Monster(Creature):
             )
             opponent.damage(damages=damage_dealt, type_of_damage=weapon.type_of_damage)
 
-    def find_opponent(self, fighters: List[Creature]) -> Union[None, int]:
+    def find_opponent(
+        self, fighters: List[Creature], wounded_fighters=List[bool]
+    ) -> Union[None, int]:
         """
         Method to find which opponent to fight in a list of creatures.
-        This method finds an opponent of another camp, so it doesn't attack an ally.
+
+        This method finds an opponent of another camp, so it doesn't attack an ally,
+        and it chooses a wounded opponent if possible.
 
         :param fighters: (List[Creatures]) the list of creatures in the fight.
+        :param wounded_fighters: (List[bool]) a list of booleans indicating if creatures are damaged or not.
         :return: (Union[None, int]) the index of the first enemy found, None otherwise.
         """
+        best_opponent = None
         for (index, fighter) in enumerate(fighters):
             if fighter.camp != self.camp:
-                return index
-        return None
+                if wounded_fighters[index] is True:
+                    best_opponent = index
+                else:
+                    if not best_opponent:
+                        best_opponent = index
+        return best_opponent
 
     def find_best_weapon(
         self,
